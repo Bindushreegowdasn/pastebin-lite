@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pastebin Lite
 
-## Getting Started
+A simple pastebin application that allows users to create and share text snippets with optional expiry constraints.
 
-First, run the development server:
+## Features
 
+- Create text pastes with shareable URLs
+- Optional time-based expiry (TTL)
+- Optional view-count limits
+- Clean, simple UI
+
+## Running Locally
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Bindushreegowdasn/pastebin-lite.git
+cd pastebin-lite
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+## Persistence Layer
 
-To learn more about Next.js, take a look at the following resources:
+This application uses **in-memory storage** (JavaScript Map) for paste data. 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Note:** Data is lost when the server restarts. For production use, this should be replaced with a persistent database like Redis, PostgreSQL, or Vercel KV.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Design Decisions
 
-## Deploy on Vercel
+- **Next.js 14+** with App Router for modern React patterns
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **In-memory storage** for simplicity (easily replaceable with Redis/KV)
+- **Deterministic time testing** supported via TEST_MODE environment variable
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## API Endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `GET /api/healthz` - Health check
+- `POST /api/pastes` - Create a new paste
+- `GET /api/pastes/:id` - Fetch paste data (API)
+- `GET /p/:id` - View paste (HTML)
+
+## Deployment
+
+Deployed on Vercel: https://pastebin-lite-olive-six.vercel.app
