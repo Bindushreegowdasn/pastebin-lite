@@ -17,7 +17,7 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const body: any = { content };
+      const body:  string = { content };
       if (ttlSeconds) body.ttl_seconds = parseInt(ttlSeconds);
       if (maxViews) body.max_views = parseInt(maxViews);
 
