@@ -1,5 +1,3 @@
-import { kv } from '@vercel/kv';
-
 export interface Paste {
   id: string;
   content: string;
@@ -8,6 +6,8 @@ export interface Paste {
   maxViews?: number;
   viewCount: number;
 }
+
+const pastes = new Map<string, Paste>();
 
 export function getCurrentTime(headers: Headers): number {
   const testMode = process.env.TEST_MODE === '1';
@@ -38,35 +38,19 @@ export function isViewLimitExceeded(paste: Paste): boolean {
 }
 
 export async function getPaste(id: string): Promise<Paste | null> {
-  try {
-    const paste = await kv.get<Paste>(`paste:${id}`);
-    return paste;
-  } catch (error) {
-    console.error('Error getting paste:', error);
-    return null;
-  }
+  return pastes.get(id) || null;
 }
 
 export async function savePaste(paste: Paste): Promise<boolean> {
-  try {
-    await kv.set(`paste:${paste.id}`, paste);
-    return true;
-  } catch (error) {
-    console.error('Error saving paste:', error);
-    return false;
-  }
+  pastes.set(paste.id, paste);
+  return true;
 }
 
 export async function incrementViewCount(id: string): Promise<boolean> {
-  try {
-    const paste = await getPaste(id);
-    if (!paste) return false;
-    
-    paste.viewCount += 1;
-    await savePaste(paste);
-    return true;
-  } catch (error) {
-    console.error('Error incrementing view count:', error);
-    return false;
-  }
+  const paste = await getPaste(id);
+  if (!paste) return false;
+  
+  paste.viewCount += 1;
+  await savePaste(paste);
+  return true;
 }
