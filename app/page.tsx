@@ -36,7 +36,7 @@ export default function Home() {
       }
 
       router.push(`/p/${data.id}`);
-    } catch (err) {
+    } catch {
       setError('Network error');
       setLoading(false);
     }

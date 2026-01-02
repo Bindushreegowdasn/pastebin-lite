@@ -28,7 +28,7 @@ export default function ViewPaste() {
         setRemainingViews(data.remaining_views);
         setExpiresAt(data.expires_at);
         setLoading(false);
-      } catch (err) {
+      } catch  {
         setError('Failed to load paste');
         setLoading(false);
       }
