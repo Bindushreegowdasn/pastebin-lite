@@ -16,10 +16,12 @@ export default function Home() {
     setError('');
     setLoading(true);
 
-  try {
-    const body: { content: string; ttl_seconds?: number; max_views?: number } = { content };
-    if (ttlSeconds) body.ttl_seconds = parseInt(ttlSeconds);
-    if (maxViews) body.max_views = parseInt(maxViews);
+    try {
+      const body = {
+        content,
+        ...(ttlSeconds && { ttl_seconds: parseInt(ttlSeconds) }),
+        ...(maxViews && { max_views: parseInt(maxViews) }),
+      };
 
       const res = await fetch('/api/pastes', {
         method: 'POST',
